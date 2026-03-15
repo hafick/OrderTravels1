@@ -100,19 +100,8 @@ header {
 }
 
 .hero {
-  position: relative; z-index: 5;
-  padding: 48px 24px 36px;
-}
-
-.hero h1 {
-  line-height: 1.15;
-  margin-bottom: 20px;
-}
-
-.hero h1 em {
-  font-style: normal;
-  color: var(--gold);
-  display: block;
+  position: relative;
+  padding: 40px 24px 36px;
 }
 
 .content-block {
