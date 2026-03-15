@@ -38,11 +38,36 @@ header {
 .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
 
 .logo-text {
-  font-family: 'Montserrat', sans-serif; font-weight: 900;
-  font-size: 13px; letter-spacing: 0.5px; color: var(--white); line-height: 1.1;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 900;
+  font-size: 15px;
+  letter-spacing: 1.5px;
+  color: var(--white);
+  line-height: 1.1;
 }
 
-.logo-sub { font-size: 8px; letter-spacing: 2px; color: var(--gold); font-weight: 600; }
+.logo-sub {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.review-btn-header {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700; font-size: 12px;
+  color: #0d2a4a;
+  background: var(--gold);
+  border: none; border-radius: 20px;
+  padding: 8px 16px; cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.review-btn-header:hover {
+  background: #ffe040; transform: translateY(-1px);
+}
 
 .page-title {
   position: relative; z-index: 5;
