@@ -81,24 +81,6 @@ header {
   font-weight: 600;
 }
 
-.phone-header {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700;
-  font-size: 15px;
-  color: var(--white);
-  text-decoration: none;
-  text-align: right;
-  line-height: 1.2;
-}
-
-.phone-header span {
-  display: block;
-  font-size: 9px;
-  font-weight: 400;
-  color: var(--text-muted);
-  letter-spacing: 0.5px;
-}
-
 .hero {
   position: relative;
   padding: 20px;
