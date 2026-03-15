@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TransferDrive — Отзывы</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0d2a4a;
+      --gold: #f5c518;
+      --white: #ffffff;
+      --muted: rgba(255,255,255,0.65);
+      --card: rgba(255,255,255,0.06);
+      --bdr: rgba(255,255,255,0.12);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(170deg, #0d2a4a 0%, #0a1f38 100%);
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* HEADER */
+    header {
+      position: sticky; top: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--bdr);
+      backdrop-filter: blur(12px);
+      background: rgba(13,42,74,0.85);
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-text {
+      font-family: 'Montserrat', sans-serif; font-weight: 900;
+      font-size: 13px; letter-spacing: 0.5px; color: var(--white); line-height: 1.1;
+    }
+    .logo-sub { font-size: 8px; letter-spacing: 2px; color: var(--gold); font-weight: 600; }
+    .review-btn-header {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700; font-size: 12px;
+      color: #0d2a4a;
+      background: var(--gold);
+      border: none; border-radius: 20px;
+      padding: 8px 16px; cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .review-btn-header:hover { background: #ffe040; transform: translateY(-1px); }
+
+    /* PAGE TITLE */
+    .page-title {
+      position: relative; z-index: 5;
+      padding: 36px 20px 24px;
+    }
+    .page-title h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(24px, 6vw, 36px);
+      font-weight: 900; line-height: 1.15; letter-spacing: -0.5px;
+    }
+    .page-title h1 em { font-style: normal; color: var(--gold); display: block; }
+    .page-title p { font-size: 13px; color: var(--muted); margin-top: 8px; }
+
+    /* RATING SUMMARY */
+    .rating-summary {
+      position: relative; z-index: 5;
+      margin: 0 20px 28px;
+      background: var(--card);
+      border: 1px solid var(--bdr);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex; align-items: center; gap: 20px;
+    }
+    .rating-big {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 52px; font-weight: 900;
+      color: var(--gold); line-height: 1;
+      flex-shrink: 0;
+    }
+    .rating-right { flex: 1; }
+    .stars-row { display: flex; gap: 4px; margin-bottom: 6px; }
+    .star { font-size: 20px; }
+    .rating-count { font-size: 12px; color: var(--muted); }
+    .bars { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; }
+    .bar-row { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+    .bar-track { flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
+    .bar-fill { height: 100%; background: var(--gold); border-radius: 3px; transition: width 0.8s ease; }
+
+    /* WRITE REVIEW FORM */
+    .write-section {
+      position: relative; z-index: 5;
+      margin: 0 20px 28px;
+      background: linear-gradient(135deg, rgba(30,77,130,0.4), rgba(13,42,74,0.7));
+      border: 1px solid rgba(245,197,24,0.25);
+      border-radius: 20px;
+      padding: 24px 20px;
+      display: none;
+    }
+    .write-section.open { display: block; }
+    .write-section h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 17px; font-weight: 900; margin-bottom: 16px;
+    }
+    .stars-input { display: flex; gap: 6px; margin-bottom: 16px; }
+    .stars-input span {
+      font-size: 32px; cursor: pointer;
+      transition: transform 0.15s;
+      filter: grayscale(1) opacity(0.4);
+    }
+    .stars-input span.active { filter: none; }
+    .stars-input span:hover { transform: scale(1.2); }
+    .form-group { margin-bottom: 14px; }
+    .form-group label {
+      display: block; font-size: 12px; color: var(--muted);
+      margin-bottom: 6px; letter-spacing: 0.3px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid var(--bdr);
+      border-radius: 10px;
+      padding: 12px 14px;
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: rgba(245,197,24,0.5); }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.25); }
+    .submit-btn {
+      width: 100%;
+      background: var(--gold);
+      color: #0d2a4a;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900; font-size: 15px;
+      border: none; border-radius: 50px;
+      padding: 16px; cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .submit-btn:hover { background: #ffe040; transform: translateY(-1px); }
+    .submit-btn:active { transform: scale(0.97); }
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 20px 0 4px;
+      font-size: 15px;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* REVIEWS LIST */
+    .reviews-list {
+      position: relative; z-index: 5;
+      padding: 0 20px 80px;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .review-card {
+      background: var(--card);
+      border: 1px solid var(--bdr);
+      border-radius: 14px;
+      padding: 16px 18px;
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .review-card.visible { opacity: 1; transform: translateY(0); }
+    .review-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+    .reviewer { display: flex; align-items: center; gap: 10px; }
+    .avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(245,197,24,0.2);
+      border: 1px solid rgba(245,197,24,0.35);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 900; font-size: 13px; color: var(--gold);
+      flex-shrink: 0;
+    }
+    .reviewer-name { font-weight: 600; font-size: 14px; }
+    .reviewer-date { font-size: 11px; color: var(--muted); margin-top: 1px; }
+    .review-stars { display: flex; gap: 2px; font-size: 14px; }
+    .review-text { font-size: 13.5px; line-height: 1.65; color: rgba(255,255,255,0.85); }
+    .route-tag {
+      display: inline-block;
+      margin-top: 10px;
+      background: rgba(245,197,24,0.1);
+      border: 1px solid rgba(245,197,24,0.25);
+      color: var(--gold);
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.5px;
+      padding: 3px 10px; border-radius: 12px;
+    }
+
+    /* DIVIDER */
+    .divider {
+      position: relative; z-index: 5;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(245,197,24,0.3), transparent);
+      margin: 4px 20px 24px;
+    }
+
+    footer {
+      position: relative; z-index: 5;
+      text-align: center;
+      padding: 16px 20px 40px;
+      font-size: 10px; color: var(--muted);
+      border-top: 1px solid var(--bdr);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .page-title { animation: fadeUp 0.6s ease both; }
+    .rating-summary { animation: fadeUp 0.6s 0.1s ease both; }
+  </style>
+</head>
+<body>
+<div class="bg-grid"></div>
+
+<header>
+  <a href="index.html" class="logo">
+    <img src="assets/logo.jpg" style="width:36px;height:36px;border-radius:50%;object-fit:cover;box-shadow:0 0 14px rgba(245,197,24,0.4);">
+    <div>
+      <div class="logo-text">TransferDrive</div>
+      <div class="logo-sub">БЫСТРО · УДОБНО · ДОСТУПНО</div>
+    </div>
+  </a>
+  <button class="review-btn-header" onclick="toggleForm()">✏️ Написать отзыв</button>
+</header>
+
+<div class="page-title">
+  <h1>Отзывы<em>наших клиентов</em></h1>
+  <p>Реальные впечатления от поездок с TransferDrive</p>
+</div>
+
+<div class="rating-summary">
+  <div class="rating-big" id="avgRating">4.9</div>
+  <div class="rating-right">
+    <div class="stars-row" id="avgStars"></div>
+    <div class="rating-count" id="ratingCount">18 отзывов</div>
+    <div class="bars" id="barsContainer"></div>
+  </div>
+</div>
+
+<div class="write-section" id="writeSection">
+  <h2>Ваш отзыв</h2>
+  <div class="stars-input" id="starsInput">
+    <span data-v="1">★</span>
+    <span data-v="2">★</span>
+    <span data-v="3">★</span>
+    <span data-v="4">★</span>
+    <span data-v="5">★</span>
+  </div>
+  <div class="form-group">
+    <label>Ваше имя</label>
+    <input type="text" id="inputName" placeholder="Например, Александр">
+  </div>
+  <div class="form-group">
+    <label>Маршрут (необязательно)</label>
+    <input type="text" id="inputRoute" placeholder="Например, Москва → Воронеж">
+  </div>
+  <div class="form-group">
+    <label>Текст отзыва</label>
+    <textarea id="inputText" rows="4" placeholder="Расскажите о вашей поездке..."></textarea>
+  </div>
+  <button class="submit-btn" onclick="submitReview()">Отправить отзыв</button>
+  <div class="success-msg" id="successMsg">✅ Спасибо! Ваш отзыв добавлен.</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="reviews-list" id="reviewsList"></div>
+
+<footer>© 2026 TransferDrive · Межгородние поездки по всей России</footer>
+
+<script>
+const REVIEWS_KEY = 'td_reviews';
+
+const defaultReviews = [
+  { name: 'Андрей М.', rating: 5, text: 'Отличный сервис! Водитель приехал вовремя, машина чистая и комфортная. Ехали из Краснодара до Ростова — всё прошло отлично. Рекомендую!', route: 'Краснодар → Ростов-на-Дону', date: '10 марта 2026' },
+  { name: 'Елена В.', rating: 5, text: 'Заказывала трансфер в аэропорт Шереметьево. Встретили с табличкой, помогли с багажом, доехали быстро. Очень довольна!', route: 'Москва → Шереметьево', date: '7 марта 2026' },
+  { name: 'Сергей К.', rating: 5, text: 'Уже третий раз пользуюсь услугами TransferDrive. Всегда пунктуально, комфортно и без лишних вопросов. Цены адекватные.', route: 'СПБ → Выборг', date: '3 марта 2026' },
+  { name: 'Ирина Н.', rating: 4, text: 'В целом хорошо, водитель вежливый, машина ухоженная. Немного задержались из-за пробок, но предупредили заранее — это приятно.', route: 'Воронеж → Белгород', date: '28 февраля 2026' },
+  { name: 'Дмитрий Л.', rating: 5, text: 'Ехал в командировку, нужны были документы. Всё оформили, чек с QR-кодом — очень удобно для отчётности. Профессионалы!', route: 'Москва → Тула', date: '22 февраля 2026' },
+  { name: 'Наталья Р.', rating: 5, text: 'Срочно понадобилось уехать — машина подали через 20 минут. Спасибо за оперативность! Водитель очень приятный человек.', route: 'Ставрополь → Пятигорск', date: '15 февраля 2026' },
+];
+
+function loadReviews() {
+  try {
+    const stored = JSON.parse(localStorage.getItem(REVIEWS_KEY) || '[]');
+    return [...stored, ...defaultReviews];
+  } catch { return defaultReviews; }
+}
+
+function saveReview(r) {
+  try {
+    const stored = JSON.parse(localStorage.getItem(REVIEWS_KEY) || '[]');
+    stored.unshift(r);
+    localStorage.setItem(REVIEWS_KEY, JSON.stringify(stored));
+  } catch {}
+}
+
+function initials(name) {
+  return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+}
+
+function starsStr(n) {
+  return '★'.repeat(n) + '☆'.repeat(5 - n);
+}
+
+function renderStars(container, val) {
+  container.innerHTML = '';
+  for (let i = 1; i <= 5; i++) {
+    const s = document.createElement('span');
+    s.textContent = '★';
+    s.style.color = i <= val ? '#f5c518' : 'rgba(255,255,255,0.2)';
+    s.style.fontSize = '15px';
+    container.appendChild(s);
+  }
+}
+
+function renderSummary(reviews) {
+  const total = reviews.length;
+  const avg = total ? (reviews.reduce((s, r) => s + r.rating, 0) / total).toFixed(1) : '0.0';
+  document.getElementById('avgRating').textContent = avg;
+  document.getElementById('ratingCount').textContent = total + ' ' + (total === 1 ? 'отзыв' : total < 5 ? 'отзыва' : 'отзывов');
+  renderStars(document.getElementById('avgStars'), Math.round(avg));
+
+  const bars = document.getElementById('barsContainer');
+  bars.innerHTML = '';
+  for (let s = 5; s >= 1; s--) {
+    const cnt = reviews.filter(r => r.rating === s).length;
+    const pct = total ? Math.round(cnt / total * 100) : 0;
+    bars.innerHTML += `<div class="bar-row"><span>${s}★</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span>${cnt}</span></div>`;
+  }
+}
+
+function renderCard(r) {
+  const card = document.createElement('div');
+  card.className = 'review-card';
+  card.innerHTML = `
+    <div class="review-header">
+      <div class="reviewer">
+        <div class="avatar">${initials(r.name)}</div>
+        <div>
+          <div class="reviewer-name">${r.name}</div>
+          <div class="reviewer-date">${r.date || ''}</div>
+        </div>
+      </div>
+      <div class="review-stars">${starsStr(r.rating)}</div>
+    </div>
+    <div class="review-text">${r.text}</div>
+    ${r.route ? `<span class="route-tag">🚖 ${r.route}</span>` : ''}
+  `;
+  return card;
+}
+
+function renderAll() {
+  const reviews = loadReviews();
+  renderSummary(reviews);
+  const list = document.getElementById('reviewsList');
+  list.innerHTML = '';
+  reviews.forEach((r, i) => {
+    const card = renderCard(r);
+    list.appendChild(card);
+    setTimeout(() => {
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { card.classList.add('visible'); obs.unobserve(card); } });
+      }, { threshold: 0.1 });
+      obs.observe(card);
+    }, i * 60);
+  });
+}
+
+let selectedRating = 0;
+const starsInput = document.getElementById('starsInput');
+starsInput.querySelectorAll('span').forEach(s => {
+  s.addEventListener('click', () => {
+    selectedRating = +s.dataset.v;
+    starsInput.querySelectorAll('span').forEach(x => x.classList.toggle('active', +x.dataset.v <= selectedRating));
+  });
+  s.addEventListener('mouseover', () => {
+    starsInput.querySelectorAll('span').forEach(x => x.classList.toggle('active', +x.dataset.v <= +s.dataset.v));
+  });
+  s.addEventListener('mouseout', () => {
+    starsInput.querySelectorAll('span').forEach(x => x.classList.toggle('active', +x.dataset.v <= selectedRating));
+  });
+});
+
+function toggleForm() {
+  const sec = document.getElementById('writeSection');
+  sec.classList.toggle('open');
+  if (sec.classList.contains('open')) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function submitReview() {
+  const name = document.getElementById('inputName').value.trim();
+  const text = document.getElementById('inputText').value.trim();
+  if (!name) { document.getElementById('inputName').focus(); return; }
+  if (!selectedRating) { starsInput.style.outline = '1px solid rgba(245,197,24,0.5)'; return; }
+  if (!text) { document.getElementById('inputText').focus(); return; }
+
+  const route = document.getElementById('inputRoute').value.trim();
+  const now = new Date();
+  const date = now.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  saveReview({ name, rating: selectedRating, text, route, date });
+  document.getElementById('successMsg').style.display = 'block';
+  document.querySelector('.submit-btn').style.display = 'none';
+
+  setTimeout(() => {
+    document.getElementById('writeSection').classList.remove('open');
+    document.getElementById('inputName').value = '';
+    document.getElementById('inputText').value = '';
+    document.getElementById('inputRoute').value = '';
+    document.getElementById('successMsg').style.display = 'none';
+    document.querySelector('.submit-btn').style.display = 'block';
+    selectedRating = 0;
+    starsInput.querySelectorAll('span').forEach(x => x.classList.remove('active'));
+    renderAll();
+  }, 1800);
+}
+
+renderAll();
+</script>
+</body>
+</html>
