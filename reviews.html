@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TransferDrive — Отзывы</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style2.css">
+</head>
+
+<body>
+<div class="bg-grid"></div>
+
+<header>
+  <a href="index.html" class="logo">
+    <img src="assets/logo.jpg" style="width:36px;height:36px;border-radius:50%;object-fit:cover;box-shadow:0 0 14px rgba(245,197,24,0.4);">
+    <div>
+      <div class="logo-text">TransferDrive</div>
+      <div class="logo-sub">БЫСТРО · УДОБНО · ДОСТУПНО</div>
+    </div>
+  </a>
+</header>
+
+<div class="page-title">
+  <h1>Отзывы<em>наших клиентов</em></h1>
+  <p>Реальные впечатления от поездок с TransferDrive</p>
+</div>
+
+<div class="rating-summary">
+  <div class="rating-big" id="avgRating">4.9</div>
+  <div class="rating-right">
+    <div class="stars-row" id="avgStars"></div>
+    <div class="rating-count" id="ratingCount">18 отзывов</div>
+    <div class="bars" id="barsContainer"></div>
+  </div>
+</div>
+
+<div class="write-section" id="writeSection">
+  <h2>Ваш отзыв</h2>
+  <div class="stars-input" id="starsInput">
+    <span data-v="1">★</span>
+    <span data-v="2">★</span>
+    <span data-v="3">★</span>
+    <span data-v="4">★</span>
+    <span data-v="5">★</span>
+  </div>
+  <div class="form-group">
+    <label>Ваше имя</label>
+    <input type="text" id="inputName" placeholder="Например, Александр">
+  </div>
+  <div class="form-group">
+    <label>Маршрут (необязательно)</label>
+    <input type="text" id="inputRoute" placeholder="Например, Москва → Воронеж">
+  </div>
+  <div class="form-group">
+    <label>Текст отзыва</label>
+    <textarea id="inputText" rows="4" placeholder="Расскажите о вашей поездке..."></textarea>
+  </div>
+  <button class="submit-btn" onclick="submitReview()">Отправить отзыв</button>
+  <div class="success-msg" id="successMsg">✅ Спасибо! Ваш отзыв добавлен.</div>
+</div>
+
+<div class="divider"></div>
+
+<div class="reviews-list" id="reviewsList"></div>
+
+<footer>© 2026 TransferDrive</footer>
+
+<script src="script2.js"></script>
+</body>
+
+</html>
