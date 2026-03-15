@@ -54,22 +54,6 @@ header {
   font-weight: 600;
 }
 
-.review-btn-header {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 700; font-size: 12px;
-  color: #0d2a4a;
-  background: var(--gold);
-  border: none; border-radius: 20px;
-  padding: 8px 16px; cursor: pointer;
-  text-decoration: none;
-  transition: background 0.15s, transform 0.15s;
-  white-space: nowrap;
-}
-
-.review-btn-header:hover {
-  background: #ffe040; transform: translateY(-1px);
-}
-
 .page-title {
   position: relative; z-index: 5;
   padding: 36px 20px 24px;
