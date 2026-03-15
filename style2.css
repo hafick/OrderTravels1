@@ -29,10 +29,10 @@ body {
 header {
   position: sticky; top: 0; z-index: 10;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 20px;
-  border-bottom: 1px solid var(--bdr);
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
   backdrop-filter: blur(12px);
-  background: rgba(13,42,74,0.85);
+  background: rgba(13,42,74,0.7);
 }
 
 .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
